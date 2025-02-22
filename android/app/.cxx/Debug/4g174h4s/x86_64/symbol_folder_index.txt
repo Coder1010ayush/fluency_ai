@@ -1,0 +1,1 @@
+/home/infinity/Downloads/app_tester/build/app/intermediates/cxx/Debug/4g174h4s/obj/x86_64

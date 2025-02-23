@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 // ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:app_tester/data/data.dart';
 
 class AudioUploaderApp extends StatelessWidget {
   const AudioUploaderApp({super.key});
@@ -37,6 +37,7 @@ class AudioUploaderApp extends StatelessWidget {
 }
 
 class AudioUploaderScreen extends StatefulWidget {
+
   const AudioUploaderScreen({super.key});
 
   @override
@@ -56,7 +57,9 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
   bool _isPlaying = false;
   String _uploadStatus = "";
   String _selectedType = "rep";
-
+  int counter = 2;  
+  late String random_text = data[counter];
+  bool _isAvail = true;
 
   @override
   void initState() {
@@ -148,7 +151,7 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
 
     var request = http.MultipartRequest(
       'POST',
-      Uri.parse('https://gameapi.svar.in/save_audio'),
+      Uri.parse('https://gameapi.svar.in/send_audio'),
     );
 
     request.files.add(await http.MultipartFile.fromPath(
@@ -156,9 +159,17 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
       _audioFile!.path,
       filename: basename(_audioFile!.path),
     ));
-
-    request.fields['text'] = _textController.text;
-    request.fields['index'] = _indexController.text;
+    if(_textController.text.isEmpty){
+      request.fields['text'] = random_text;
+    }
+    else{
+      request.fields['text'] = _textController.text;
+    }
+    if (_indexController.text.isEmpty){
+      request.fields['index'] = "-1";
+    }else{
+      request.fields['index'] = _indexController.text;
+    }
     request.fields['type'] = _selectedType;
     request.fields['phoneme'] = _phonemeController.text;
 
@@ -170,6 +181,20 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
         _uploadStatus = response.statusCode == 200
             ? "Upload Successful ✅"
             : "Upload Failed ❌: ${response.reasonPhrase}";
+
+      
+      if(data.length-1 > counter && _textController.text.isEmpty){
+        counter += 1;
+        random_text = data[counter];
+        
+      }else{
+          if (data.length -1 < counter && _textController.text.isNotEmpty) {
+            _isAvail = false;
+          }else{
+            _isAvail = true;
+          }
+          
+      }
       });
     } catch (e) {
       setState(() {
@@ -181,10 +206,6 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
 
   Widget _buildTextField(String hint, TextEditingController controller,
       {bool isNumeric = false}) {
-    // controller.text = "-1";
-    if (isNumeric){
-      controller.text = "-1";
-    }
     return TextField(
       controller: controller,
       keyboardType: isNumeric ? TextInputType.number : TextInputType.text,
@@ -244,7 +265,54 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
             //   label:const Text("Select Audio File"),
             //   style: ElevatedButton.styleFrom(backgroundColor: Colors.blueGrey),
             // ),
-            // const SizedBox(height: 10),
+            _isAvail ? Container(
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 14, 14, 13),
+                borderRadius: BorderRadius.circular(12.0),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromARGB(66, 121, 119, 119),
+                    blurRadius: 6.0,
+                    spreadRadius: 2.0,
+                    offset: Offset(2, 4),
+                  ),
+                ],
+              ),
+              child: Text(
+                random_text,
+                style: const TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            )  : Container(
+              padding: const EdgeInsets.all(16.0),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(255, 14, 14, 13),
+                borderRadius: BorderRadius.circular(12.0),
+                boxShadow: const [
+                  BoxShadow(
+                    color: Color.fromARGB(66, 121, 119, 119),
+                    blurRadius: 6.0,
+                    spreadRadius: 2.0,
+                    offset: Offset(2, 4),
+                  ),
+                ],
+              ),
+              child:const Text(
+                "Enter Your Own Text",
+                style: TextStyle(
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ), 
+            const SizedBox(height: 10),
             ElevatedButton.icon(
               onPressed: _isRecording ? _stopRecording : _startRecording,
               icon: Icon(_isRecording ? Icons.stop : Icons.mic),

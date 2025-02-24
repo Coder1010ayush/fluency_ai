@@ -69,6 +69,7 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
     setState(() {
       inputString = newString;
       indexCharMap = {for (int i = 0; i < newString.length; i++) i: newString[i]};
+      indexCharMap[-1]  = "";
       selectedIndex = null;
     });
   }
@@ -342,8 +343,6 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
               style: ElevatedButton.styleFrom(backgroundColor: Colors.deepOrange),
             ),
             const SizedBox(height: 20),
-            _buildTextField("Enter Text Label", _textController),
-            const SizedBox(height: 10),
             _buildTextField("Enter Index", _indexController, isNumeric: true ),
             const SizedBox(height: 10),
             Padding(
@@ -353,7 +352,7 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
                 children: [
                   TextField(
                     decoration: const InputDecoration(
-                      labelText: 'Enter a string',
+                      labelText: 'Enter Label',
                       border: OutlineInputBorder(),
                     ),
                     onChanged: _buildIndexCharacterMap,
@@ -372,6 +371,9 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
                           onChanged: (int? newIndex) {
                             setState(() {
                               selectedIndex = newIndex;
+                              _indexController.text = selectedIndex.toString();
+                              _phonemeController.text = indexCharMap[selectedIndex]!;
+                              _textController.text= inputString;
                             });
                           },
                         )

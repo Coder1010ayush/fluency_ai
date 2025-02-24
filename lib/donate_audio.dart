@@ -60,6 +60,19 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
   int counter = 2;  
   late String random_text = data[counter];
   bool _isAvail = true;
+  Map<int, String> indexCharMap = {};
+  int? selectedIndex;
+  String inputString = "";
+
+
+  void _buildIndexCharacterMap(String newString) {
+    setState(() {
+      inputString = newString;
+      indexCharMap = {for (int i = 0; i < newString.length; i++) i: newString[i]};
+      selectedIndex = null;
+    });
+  }
+
 
   @override
   void initState() {
@@ -333,6 +346,39 @@ class _AudioUploaderScreenState extends State<AudioUploaderScreen> {
             const SizedBox(height: 10),
             _buildTextField("Enter Index", _indexController, isNumeric: true ),
             const SizedBox(height: 10),
+            Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  TextField(
+                    decoration: const InputDecoration(
+                      labelText: 'Enter a string',
+                      border: OutlineInputBorder(),
+                    ),
+                    onChanged: _buildIndexCharacterMap,
+                  ),
+                  const SizedBox(height: 20),
+                  indexCharMap.isNotEmpty
+                      ? DropdownButton<int>(
+                          value: selectedIndex,
+                          hint:const Text('Select a character'),
+                          items: indexCharMap.entries.map((entry) {
+                            return DropdownMenuItem<int>(
+                              value: entry.key,
+                              child: Text('Index ${entry.key}: ${entry.value}'),
+                            );
+                          }).toList(),
+                          onChanged: (int? newIndex) {
+                            setState(() {
+                              selectedIndex = newIndex;
+                            });
+                          },
+                        )
+                      :const Text("Enter text to see options"),
+                ],
+              ),
+            ),
             _buildDropdown(),
             const SizedBox(height: 10),
             _buildTextField("Enter Phoneme", _phonemeController),

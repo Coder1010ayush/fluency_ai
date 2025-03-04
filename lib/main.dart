@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Fluency AI',
       debugShowCheckedModeBanner: false,
-      theme: darkTheme, 
+      theme: darkTheme,
       home: const HomeScreen(),
     );
   }
@@ -23,16 +23,16 @@ class MyApp extends StatelessWidget {
 
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  scaffoldBackgroundColor: Colors.black, 
-  primaryColor: Colors.black, 
+  scaffoldBackgroundColor: Colors.black,
+  primaryColor: Colors.black,
   appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.black, 
-    foregroundColor: Colors.white, 
+    backgroundColor: Colors.black,
+    foregroundColor: Colors.white,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      backgroundColor: Colors.grey[900], 
-      foregroundColor: Colors.white, 
+      backgroundColor: Colors.grey[900],
+      foregroundColor: Colors.white,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     ),
   ),
@@ -42,7 +42,7 @@ ThemeData darkTheme = ThemeData(
   ),
   inputDecorationTheme: InputDecorationTheme(
     filled: true,
-    fillColor: Colors.grey[850], 
+    fillColor: Colors.grey[850],
     border: OutlineInputBorder(
       borderRadius: BorderRadius.circular(12),
       borderSide: const BorderSide(color: Colors.white),
@@ -63,12 +63,13 @@ class HomeScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             SizedBox(
-              width: 150, 
+              width: 150,
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const RecordingWidget()),
+                    MaterialPageRoute(
+                        builder: (context) => const RecordingWidget()),
                   );
                 },
                 child: const Text('Word AI'),
@@ -81,19 +82,20 @@ class HomeScreen extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => const AudioRecorderApp()),
+                    MaterialPageRoute(
+                        builder: (context) => const AudioRecorderApp()),
                   );
                 },
                 child: const Text('Fluency AI'),
               ),
             ),
-            const SizedBox(height: 20,),
-            SizedBox(
-              width: 150,
-              child: ElevatedButton(onPressed: (){
-                Navigator.push(context, MaterialPageRoute(builder: (context)=> const AudioUploaderApp()));
-              }, child: const Text("Donate Voice")),
-            ),
+            // const SizedBox(height: 20,),
+            // SizedBox(
+            //   width: 150,
+            //   child: ElevatedButton(onPressed: (){
+            //     Navigator.push(context, MaterialPageRoute(builder: (context)=> const AudioUploaderApp()));
+            //   }, child: const Text("Donate Voice")),
+            // ),
           ],
         ),
       ),

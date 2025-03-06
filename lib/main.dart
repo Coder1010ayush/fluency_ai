@@ -23,10 +23,10 @@ class MyApp extends StatelessWidget {
 
 ThemeData darkTheme = ThemeData(
   brightness: Brightness.dark,
-  scaffoldBackgroundColor: Colors.black,
-  primaryColor: Colors.black,
-  appBarTheme: const AppBarTheme(
-    backgroundColor: Colors.black,
+  scaffoldBackgroundColor: Colors.deepPurple[900],
+  primaryColor: Colors.deepPurple[900],
+  appBarTheme: AppBarTheme(
+    backgroundColor: Colors.deepPurple[900],
     foregroundColor: Colors.white,
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
@@ -89,13 +89,20 @@ class HomeScreen extends StatelessWidget {
                 child: const Text('Fluency AI'),
               ),
             ),
-            // const SizedBox(height: 20,),
-            // SizedBox(
-            //   width: 150,
-            //   child: ElevatedButton(onPressed: (){
-            //     Navigator.push(context, MaterialPageRoute(builder: (context)=> const AudioUploaderApp()));
-            //   }, child: const Text("Donate Voice")),
-            // ),
+            const SizedBox(
+              height: 20,
+            ),
+            SizedBox(
+              width: 150,
+              child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const AudioUploaderApp()));
+                  },
+                  child: const Text("Donate Voice")),
+            ),
           ],
         ),
       ),

@@ -39,7 +39,7 @@ class _RecordingWidgetSentState extends State<RecordingWidgetSent> {
       if (await _audioRecorder.hasPermission()) {
         final directory = await getApplicationDocumentsDirectory();
         _recordingPath = '${directory.path}/recording.wav';
-        
+
         await _audioRecorder.start(
           const RecordConfig(
             encoder: AudioEncoder.wav,
@@ -48,7 +48,7 @@ class _RecordingWidgetSentState extends State<RecordingWidgetSent> {
           ),
           path: _recordingPath!,
         );
-        
+
         setState(() {
           _isRecording = true;
         });
@@ -107,14 +107,12 @@ class _RecordingWidgetSentState extends State<RecordingWidgetSent> {
             'syllableCount': List<int>.from(data['syllableCount']),
             'isCorrect': data['isCorrect'],
             'score': data['score'],
-           'corpus': List<String>.from(data['corpus']),
+            'corpus': List<String>.from(data['corpus']),
           };
         });
       } else {
         throw Exception('Failed to send data to API');
       }
-
-      
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Error: $e')),
@@ -161,12 +159,15 @@ class _RecordingWidgetSentState extends State<RecordingWidgetSent> {
                   : const Text('Send to API'),
             ),
             const SizedBox(height: 15),
-            if (_aiOutput != null) 
+            if (_aiOutput != null)
               AIOutputVisualization(
                 syllableCount: _aiOutput!['syllableCount'],
                 isCorrect: _aiOutput!['isCorrect'],
                 score: _aiOutput!['score'],
                 corpus: _aiOutput!['corpus'],
+                repCount: 0,
+                proCount: 0,
+                blockCount: 0,
               ),
           ],
         ),
